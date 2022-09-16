@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  nodejs:
+    container_name: nodejs
+    build: 
+      context: ./
+      dockerfile: ./docker/Dockerfile.development
+      target: development
+    command: ./wait-for-it.sh postgres:5432 --strict --timeout=300 -- npm run start:dev
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/opt/app
+      - ./node_modules:/opt/app/node_modules
+    networks:
+      - sgp-network
+    depends_on:
+      - postgres
+      - mailhog
+    env_file:
+      - .env
+
+  postgres:
+    container_name: postgres
+    image: postgres:14
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - sgp-network
+    restart: always
+    env_file:
+      - .env
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - sgp-network
+
+networks:
+  sgp-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

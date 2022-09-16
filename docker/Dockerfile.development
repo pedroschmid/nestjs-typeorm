@@ -1,0 +1,19 @@
+FROM node:16.14.2-alpine as development
+
+WORKDIR /opt/app
+
+RUN apk update && apk add bash
+
+COPY package*.json /opt/app/
+
+RUN npm i -g @nestjs/cli
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+COPY ./wait-for-it.sh ./wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
