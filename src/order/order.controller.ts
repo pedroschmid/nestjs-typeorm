@@ -17,12 +17,16 @@ import { ResponseJsonDTO } from 'src/base/dtos/response-json.dto';
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-import { OrderEntity } from 'src/order/order.entity';
 import { IOrderController } from 'src/order/interfaces/order-controller.interface';
+
+import { OrderEntity } from 'src/order/order.entity';
+
+import { OrderService } from 'src/order/order.service';
+
 import { FindAllOrdersResponseDTO } from 'src/order/dtos/find-all-orders-response.dto';
 import { StoreOrderDTO } from 'src/order/dtos/store-order.dto';
 import { UpdateOrderDTO } from 'src/order/dtos/update-order.dto';
-import { OrderService } from 'src/order/order.service';
+import { ChangeOrderStatusDTO } from 'src/order/dtos/change-order-status.dto';
 
 @ApiTags('Orders')
 @ApiBearerAuth()
@@ -89,6 +93,22 @@ export class OrderController
     const status: HttpStatus = HttpStatus.OK;
     const message = 'Order deleted successfully';
     const data: OrderEntity = await this.orderService.remove(id);
+
+    return this.responseJSON(status, message, data);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/:id/status')
+  public async changeStatus(
+    @Param('id') id: string,
+    @Body() changeOrderStatusDTO: ChangeOrderStatusDTO,
+  ): Promise<ResponseJsonDTO> {
+    const status: HttpStatus = HttpStatus.OK;
+    const message = 'Order status changed successfully';
+    const data: OrderEntity = await this.orderService.changeStatus(
+      id,
+      changeOrderStatusDTO,
+    );
 
     return this.responseJSON(status, message, data);
   }

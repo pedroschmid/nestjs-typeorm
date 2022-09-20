@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class StoreOrderDTO {
   @ApiProperty()
@@ -33,5 +33,5 @@ export class StoreOrderDTO {
 
   @ApiProperty()
   @IsNotEmpty()
-  orderStatus: string;
+  status: string;
 }

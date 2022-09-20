@@ -17,12 +17,15 @@ import { ResponseJsonDTO } from 'src/base/dtos/response-json.dto';
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-import { CardEntity } from 'src/card/card.entity';
 import { ICardController } from 'src/card/interfaces/card-controller.interface';
+
+import { CardEntity } from 'src/card/card.entity';
+
+import { CardService } from 'src/card/card.service';
+
 import { FindAllCardsResponseDTO } from 'src/card/dtos/find-all-cards-response.dto';
 import { StoreCardDTO } from 'src/card/dtos/store-card.dto';
 import { UpdateCardDTO } from 'src/card/dtos/update-card.dto';
-import { CardService } from 'src/card/card.service';
 
 @ApiTags('Cards')
 @ApiBearerAuth()

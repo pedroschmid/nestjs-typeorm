@@ -30,5 +30,5 @@ export class OrderEntity extends BaseEntity {
   public price: number;
 
   @Column({ name: 'order_status', unique: false, nullable: false })
-  public orderStatus: string;
+  public status: string;
 }

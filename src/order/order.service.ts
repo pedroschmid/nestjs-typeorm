@@ -14,6 +14,7 @@ import { IOrderService } from 'src/order/interfaces/order-service.interface';
 import { FindAllOrdersResponseDTO } from 'src/order/dtos/find-all-orders-response.dto';
 import { StoreOrderDTO } from 'src/order/dtos/store-order.dto';
 import { UpdateOrderDTO } from 'src/order/dtos/update-order.dto';
+import { ChangeOrderStatusDTO } from 'src/order/dtos/change-order-status.dto';
 
 import { UserEntity } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -121,6 +122,34 @@ export class OrderService implements IOrderService {
       this.logger.error(error);
       throw new BadRequestException(
         'Error while removing order!',
+        error.message,
+      );
+    }
+  }
+
+  public async changeStatus(
+    id: string,
+    changeOrderStatusDTO: ChangeOrderStatusDTO,
+  ): Promise<OrderEntity> {
+    try {
+      const existingOrder: OrderEntity = await this.orderRepository.findOneBy({
+        id,
+      });
+
+      if (!existingOrder) {
+        throw new NotFoundException(`Order with id ${id} not found!`);
+      }
+
+      const entity: OrderEntity = plainToInstance(OrderEntity, {
+        id: existingOrder.id,
+        status: changeOrderStatusDTO.status,
+      });
+
+      return await this.orderRepository.save(entity);
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException(
+        'Error while updating order status!',
         error.message,
       );
     }

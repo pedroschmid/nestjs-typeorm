@@ -9,8 +9,6 @@ import { CardEntity } from 'src/card/card.entity';
 
 import { EUserStatus } from 'src/user/enums/user-status.enum';
 
-// import { Order } from './order.entity';
-
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
   @OneToMany(() => OrderEntity, (order) => order.user)

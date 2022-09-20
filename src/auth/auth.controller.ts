@@ -4,18 +4,21 @@ import { ApiTags } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controller.base';
 import { ResponseJsonDTO } from 'src/base/dtos/response-json.dto';
 
-import { LoginPayloadDTO } from 'src/auth/dtos/login-payload.dto';
-import { LoginResponseDTO } from 'src/auth/dtos/login-response.dto';
-import { ChangePasswordPayloadDTO } from 'src/auth/dtos/change-password-payload.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { IAuthController } from 'src/auth/interfaces/auth-controller.interface';
 
 import { UserEntity } from 'src/user/user.entity';
+
+import { AuthService } from 'src/auth/auth.service';
+
+import { LoginPayloadDTO } from 'src/auth/dtos/login-payload.dto';
+import { LoginResponseDTO } from 'src/auth/dtos/login-response.dto';
 import { StoreUserDTO } from 'src/user/dtos/store-user.dto';
 import { SendConfirmationCodePayloadDTO } from './dtos/send-confirmation-code-payload.dto';
+import { ChangePasswordPayloadDTO } from 'src/auth/dtos/change-password-payload.dto';
 
 @ApiTags('Authentication')
 @Controller({ path: '/auth' })
-export class AuthController extends BaseController {
+export class AuthController extends BaseController implements IAuthController {
   constructor(private readonly authService: AuthService) {
     super();
   }
